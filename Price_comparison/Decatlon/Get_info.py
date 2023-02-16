@@ -18,8 +18,6 @@ def links():
     return men_stocks, women_stocks, children_stocks, accessories
 
 
-print(links())
-
 
 
 
