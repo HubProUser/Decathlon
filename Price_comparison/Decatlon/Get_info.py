@@ -1,10 +1,27 @@
 import bs4
-import requests
+import urllib.request
 
-r = requests.get('https://www.decathlon.bg/')
 
-soup = bs4.BeautifulSoup(r.text, 'lxml')
+def get_links(a):
+    decathlon = 'https://www.decathlon.bg'
+    r = urllib.request.urlopen(decathlon)
+    soup = bs4.BeautifulSoup(r, 'html.parser')
+    link = soup.find('li', {'class': f'root root-{a}'}).find('a')['href']
+    return link
 
-titles = soup.find_all('div', {'class': 'title'})
 
-print(titles)
+def links():
+    men_stocks = get_links(a='4')
+    women_stocks = get_links(a='5')
+    children_stocks = get_links(a='6')
+    accessories = get_links(a='7')
+    return men_stocks, women_stocks, children_stocks, accessories
+
+
+print(links())
+
+
+
+
+
+
