@@ -1,13 +1,9 @@
 import bs4
 import urllib.request
-import gspread
 import re
-from urlextract import URLExtract
-import ast
 
 
-def decathlon():
-    link = 'https://www.decathlon.bg/'
+def request(link):
     r = urllib.request.urlopen(link)
     soup = bs4.BeautifulSoup(r, 'html.parser')
     return soup
@@ -20,22 +16,12 @@ def category(soup):
 
 def sports(categories):
     for sport in categories:
-        sport = str(sport.find_all('a'))
+        sport = sport.find_all('a', href=re.compile('https://www.decathlon.bg/'))
         return sport
 
 
-extractor = URLExtract()
-
-
-def link(sport):
-    for url in extractor.gen_urls(sport):
-        links = url
-        print(links)
-
-
-
-data = decathlon()
+data = request(link='https://www.decathlon.bg/')
 cat = category(data)
 sport = sports(cat)
-links = link(sport)
-link()
+print(sport)
+
