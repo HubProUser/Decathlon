@@ -1,6 +1,9 @@
 import bs4
 import urllib.request
 import gspread
+import re
+from urlextract import URLExtract
+import ast
 
 
 def decathlon():
@@ -11,22 +14,28 @@ def decathlon():
 
 
 def category(soup):
-    categories = soup.find_all('ul', {'class': 'submenu submenu-depth-2'})
+    categories = soup.find_all('li', {'class': 'root root-3 category-sports'})
     return categories
 
 
+def sports(categories):
+    for sport in categories:
+        sport = str(sport.find_all('a'))
+        return sport
 
 
+extractor = URLExtract()
 
 
-
-
-
-
+def link(sport):
+    for url in extractor.gen_urls(sport):
+        links = url
+        print(links)
 
 
 
 data = decathlon()
-links = category(data)
-sport = sports(links)
-print(sport)
+cat = category(data)
+sport = sports(cat)
+links = link(sport)
+link()
