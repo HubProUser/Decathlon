@@ -1,6 +1,5 @@
 import bs4
 import urllib.request
-import re
 
 
 def request(link):     # get decathlon site code
@@ -9,15 +8,30 @@ def request(link):     # get decathlon site code
     return soup
 
 
-def sports(soup):
+def sport_links():
+    soup = request('https://www.sportdepot.bg/')
+    names = []
     links = []
     div = soup.find('div', {'class': 'container-fluid'}).find('ul')
     for link in div.find_all('a', href=True):
         links.append('https://www.sportdepot.bg/'+link['href'])
-    return links
+    for name in div.find_all('a'):
+        names.append(name.text)
+    paired = dict(zip(names, links))
+    return paired, names
 
 
-data = request(link='https://www.sportdepot.bg/')
-sports = sports(data)
-print(sports)
+def choose_sport():
+    paired, names = sport_links()
+    while True:
+        print(names)
+        input_name = input('Choose category:\n')
+        if input_name in names:
+            print(paired[input_name])
+            break
+        else:
+            print('no such category')
+
+
+choose_sport()
 
