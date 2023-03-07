@@ -4,18 +4,20 @@ import re
 
 
 def request(link):     # get decathlon site code
-    r = urllib.request.urlopen(link)
+    r = urllib.request.urlopen(link+'sports')
     soup = bs4.BeautifulSoup(r, 'html.parser')
     return soup
 
 
 def sports(soup):
-    div = soup.find('div', {'class': 'container-fluid'})
-    ul = div.find('ul', {'class': 'list-unstyled'})
-    return ul
+    links = []
+    div = soup.find('div', {'class': 'container-fluid'}).find('ul')
+    for link in div.find_all('a', href=True):
+        links.append('https://www.sportdepot.bg/'+link['href'])
+    return links
 
 
-data = request(link='https://www.sportdepot.bg/sports')
+data = request(link='https://www.sportdepot.bg/')
 sports = sports(data)
 print(sports)
 
