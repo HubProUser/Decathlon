@@ -2,7 +2,7 @@ import bs4
 import urllib.request
 
 
-def request(link):     # get decathlon site code
+def request(link):
     r = urllib.request.urlopen(link+'sports')
     soup = bs4.BeautifulSoup(r, 'html.parser')
     return soup
@@ -17,20 +17,35 @@ def sport_links():
         links.append('https://www.sportdepot.bg/'+link['href'])
     for name in div.find_all('a'):
         names.append(name.text)
+    names = [x.lower() for x in names]
     paired = dict(zip(names, links))
     return paired, names
 
 
+def choose_what_to_do():
+    pass
+
+
 def choose_sport():
-    paired, names = sport_links()
+    pass
+
+
+def stock_info():
+    pass
+
+
+def end_program():
+    pass
+
+
+def get_stock_info():
     while True:
-        print(names)
-        input_name = input('Choose category:\n')
-        if input_name in names:
-            print(paired[input_name])
-            break
+        choose_what_to_do()
+        if choose_sport():    # start process
+            stock_info()
+            choose_what_to_do()
         else:
-            print('no such category')
+            end_program()     # break
 
 
 choose_sport()
