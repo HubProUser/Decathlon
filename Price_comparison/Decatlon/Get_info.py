@@ -9,20 +9,13 @@ def request(link):     # get decathlon site code
     return soup
 
 
-def category(soup):    # all sports with useless info
-    categories = soup.find_all('li', {'class': 'root root-3 category-sports'})
-    return categories
+def sports(soup):
+    div = soup.find('div', {'class': 'container-fluid'})
+    ul = div.find('ul', {'class': 'list-unstyled'})
+    return ul
 
 
-def sports(categories):   # all the sport links and names
-    for sport in categories:
-        sport = sport.find_all('a', href=re.compile('https://www.decathlon.bg/'))
-        return sport
-
-
-data = request(link='https://www.decathlon.bg/')
-cat = category(data)
-#print(cat)              # try to use both prints to see what each does
-sport = sports(cat)
-print(sport)
+data = request(link='https://www.sportdepot.bg/sports')
+sports = sports(data)
+print(sports)
 
